@@ -74,26 +74,26 @@ FS = {
 	
 	MoveFish: function (dir) {
 		
-		var propertyName = 'margin';
+		var propertyName = '';
 		var change ='';
 		
 		if (!FS.Check(dir)) return;
 		
 		switch(dir) {
 			case 'up':
-				propertyName += 'Top';
+				propertyName += 'top';
 				change = '-=';
 				break;
 			case 'down':
-				propertyName += 'Top';
+				propertyName += 'top';
 				change = '+=';
 				break;
 			case 'right':
-				propertyName += 'Left';
+				propertyName += 'left';
 				change = '+=';
 				break;
 			case 'left':
-				propertyName += 'Left';
+				propertyName += 'left';
 				change = '-=';
 				break;
 		}
@@ -141,10 +141,12 @@ FS = {
 		var seed = FS.RNDBTW(1, 150);
 		
 		switch (true) {
-			case seed < 25: // talk
+			case seed < 20: // talk
 			
 				FS.Bubble();
+
 				break;
+
 			case seed < 50: // move
 			
 				FS.MoveFish(FS.GET_DIR());
@@ -204,7 +206,7 @@ FS = {
 			top: fish_y,
 			left: fish_x
 		}).animate({
-			marginTop: "-=2000"
+			top: "-=2000"
 		}, {
 			complete: function () {
 				$bubble.remove();
