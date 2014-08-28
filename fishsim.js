@@ -6,6 +6,12 @@ FS = {
 		
 	},
 	
+	PAD: function (n, width, z) {
+		z = z || '0';
+		n = n + '';
+		return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+	},
+
 	DIRECTIONS: ['left', 'right', 'up', 'down'],
 	
 	GET_DIR: function () {
@@ -14,6 +20,8 @@ FS = {
 	
 	PIXEL_UNIT: 25,
 	
+	SCORE: 0,
+
 	ScreenManager: {
 		
 		Evaluate: function () {
@@ -98,6 +106,7 @@ FS = {
 			
 			this.fish.animate(configObj, 800);
 			
+			this.UpdateScore();
 		};
 		
 	},
@@ -132,10 +141,10 @@ FS = {
 		var seed = FS.RNDBTW(1, 150);
 		
 		switch (true) {
-			//case seed < 20: // talk
+			case seed < 25: // talk
 			
-			//	FS.Talk();
-			//	break;
+				FS.Bubble();
+				break;
 			case seed < 50: // move
 			
 				FS.MoveFish(FS.GET_DIR());
@@ -159,6 +168,53 @@ FS = {
 			$talkbar.html("");
 		}, 3000);
 		
+	},
+
+	UpdateScore: function () {
+
+		if (!this.fish) return;
+
+		FS.SCORE++;
+
+		var text = "SCORE: ";
+
+		text += FS.PAD(FS.SCORE, 10);
+
+		$('.thoughts').html(text);
+
+	},
+
+	Bubble: function () {
+
+		if (!this.fish) return;
+
+		if ($('.bubble').length > 0) return;
+
+		var $bubble = $('<div />', {
+				class: 'bubble'
+			});
+
+		var fishPos = this.fish.offset(),
+			fish_x = fishPos.left + 117,
+			fish_y = fishPos.top + 20;
+
+		$('html').append($bubble);
+
+		$bubble.offset({
+			top: fish_y,
+			left: fish_x
+		}).animate({
+			marginTop: "-=2000"
+		}, {
+			complete: function () {
+				$bubble.remove();
+			},
+
+			duration: 20000
+		});
+
+		this.UpdateScore();
+
 	},
 	
 	THOUGHTS: [
@@ -186,6 +242,8 @@ $(window).resize(function () {
 	FS.ScreenManager.Evaluate();
 	
 	FS.InsertFish();
+
+	FS.UpdateScore();
 });
 
 $(function () {

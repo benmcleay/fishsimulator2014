@@ -25,6 +25,12 @@ html {
 	float: right;
 }
 
+.bubble {
+	width: 20px;
+	height: 20px;
+	background-color: #2ac4c0;
+}
+
 .thoughts {
 	position: fixed;
 	bottom: 0;
